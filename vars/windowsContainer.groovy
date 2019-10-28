@@ -11,7 +11,7 @@ def call(image, dockerArgs, commands)
 	def targetDir = 'C:\\workspace'
 	def batchCommands = [
 		"@echo off",
-		(robocopy \"%WORKSPACE%\" \"${targetDir}\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0",
+		"(robocopy \"%WORKSPACE%\" \"${targetDir}\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0",
 		"cd \"${targetDir}\""
 	]
 	
