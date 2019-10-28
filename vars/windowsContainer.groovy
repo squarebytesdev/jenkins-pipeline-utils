@@ -11,7 +11,7 @@ def call(image, dockerArgs, commands)
 	def targetDir = 'C:\\workspace'
 	def batchCommands = [
 		"@echo off",
-		"ROBOCOPY \"%WORKSPACE%\" \"${targetDir}\" /s",
+		(robocopy \"%WORKSPACE%\" \"${targetDir}\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0",
 		"cd \"${targetDir}\""
 	]
 	
@@ -23,7 +23,7 @@ def call(image, dockerArgs, commands)
 	}
 	
 	//Perform the copy back into the workspace only if all commands succeeded
-	batchCommands.add("ROBOCOPY \"${targetDir}\" \"%WORKSPACE%\" /s")
+	batchCommands.add("(robocopy \"${targetDir}\" \"%WORKSPACE%\" /s) ^& IF %ERRORLEVEL% LSS 8 SET ERRORLEVEL = 0")
 	
 	//Run the container
 	writeFile(file: '_______jenkins_entrypoint.bat', text: batchCommands.join('\r\n'))
